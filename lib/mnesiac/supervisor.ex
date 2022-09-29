@@ -12,9 +12,10 @@ defmodule Mnesiac.Supervisor do
   end
 
   @impl true
-  def init([config, opts]) do
-    Logger.info("[mnesiac:#{node()}] mnesiac starting...")
-    Mnesiac.init_mnesia(config)
+  def init([hosts_fn, opts]) do
+    config = apply(hosts_fn,[])
+    Logger.info("[mnesiac:#{node()}] starting with hosts: #{inspect(config)}")
+    :ok = Mnesiac.init_mnesia(config)
     Logger.info("[mnesiac:#{node()}] mnesiac started")
 
     opts = Keyword.put(opts, :strategy, :one_for_one)
