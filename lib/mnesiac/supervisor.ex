@@ -12,9 +12,9 @@ defmodule Mnesiac.Supervisor do
   end
 
   @impl true
-  def init([config, opts]) do
-    Logger.info("[mnesiac starting with config #{config}]")
-    Logger.info("[mnesiac:#{node()}] mnesiac starting...")
+  def init([hosts_fn, opts]) do
+    config = apply(hosts_fn,[])
+    Logger.info("[mnesiac:#{node()}] starting with hosts: #{inspect(config)}")
     :ok = Mnesiac.init_mnesia(config)
     Logger.info("[mnesiac:#{node()}] mnesiac started")
 
